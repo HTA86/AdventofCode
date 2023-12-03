@@ -20,27 +20,44 @@ data.forEach((dataRow, index) => {
     values: [ 
       { '467': {place: 0, included: false} },
       { '114': {place: 5, included: false} }
-    ]
+    ],
+    symbols: [1,4]
   }
 
-  dataObject[index] = { values: [] }
+  dataObject[index] = { values: [], symbols: [] }
 
-  nrAndSymbol.forEach(value => {
+  nrAndSymbol.forEach(valueAndSymbol => {
+    // Only number
+    const valueSplit = valueAndSymbol.split(/[^a-zA-Z0-9]/).filter(a => { return a.length > 0})[0]
+    const value = valueSplit ? valueSplit.replace(/[^0-9]/g, '') : undefined
+    const valuePlace = dataRow.indexOf(value)
+
+    const symbol = valueAndSymbol.split(/\d/g).filter(a => { return a.length > 0})[0]
+    const symbolPlace = dataRow.indexOf(symbol)
+
+
+    /*
     let containsSymbol = /[^a-zA-Z0-9]/.test(value);
     let containsDigits = /\d/.test(value);
+
+    //console.log(value)
     //console.log(containsSymbol + ': ' + value)
-    const place = dataRow.indexOf(value)
     //console.log(place + ': ' + value)
+    //console.log(value)
+    //console.log(value.split(/[^a-zA-Z0-9]/).filter(a => { return a.length > 0}))
+*/
+    if(value) {
+      dataObject[index].values.push( { [value]: { place: valuePlace, included: false } })
+    }
 
-  
-    console.log(value)
-    console.log(value.split(/[^a-zA-Z0-9]/).filter(a => { return a.length > 0}))
-
-    dataObject[index].values.push( { [value]: { place: place, included: ( containsDigits && containsSymbol) } })
+    if(symbol) {
+      dataObject[index].symbols.push(symbolPlace)
+    }
+    
     
   });
   
-  // console.log(JSON.stringify(dataObject[index]))
+  console.log(index + ': ' + JSON.stringify(dataObject[index]))
 
 
 
