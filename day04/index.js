@@ -26,17 +26,31 @@ const dataObjects = data.reduce((cards, row) => {
   return cards;
 }, {}); // Start with an empty object
 
-console.log(JSON.stringify(dataObjects, null, 4))
+
+Object.keys(dataObjects).forEach(cardKey => {
+  const card = dataObjects[cardKey]
+
+  // Matched numbers array
+  const numbersToCount = card.win.filter(number => { return card.your.includes(number) }).length
+  
+  let amount = numbersToCount > 0 ? 1 : 0
+
+  if(numbersToCount >= 2)  {
+    loopNr = (numbersToCount - 1) 
+    
+    for(let i = 0; i < loopNr; i++) {
+      amount *= 2
+    }
 
 
-
+  }
+  result += amount
+});
 
 
 
 // Part One
-
 console.log(`Part One: ${result}`)
-
 
 
 // Part Two
