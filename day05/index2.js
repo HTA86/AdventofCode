@@ -13,6 +13,9 @@ try {
 
 // First seed row to object
 const seeds = data[0].split(':')[1].split(' ').filter(value => value.length > 0)
+
+
+
 // Delete the first seed row
 data.shift()
 
@@ -30,12 +33,12 @@ data.forEach(row => {
     const seedMap = row.includes(':') ? row.split(':')[0].replace('map', '').trim() : undefined
 
     // Create the object
-    if(seedMap) {
+    if (seedMap) {
       seedMaps[seedMap] = []
       previusSeedMap = seedMap
     }
 
-    if(!seedMap) {
+    if (!seedMap) {
       seedMaps[previusSeedMap].push(row.split(' '))
     }
 
@@ -47,7 +50,7 @@ data.forEach(row => {
 const getSeedMapInfo = (fromSeed, fromSeedNr) => {
   //console.log(fromSeed)
   fromSeedNr = Number(fromSeedNr)
-  let seedMap = Object.keys(seedMaps).filter(value => { return value.startsWith(`${fromSeed}-`)})[0]
+  let seedMap = Object.keys(seedMaps).filter(value => { return value.startsWith(`${fromSeed}-`) })[0]
 
   //console.log(seedMap)
   let toSeed = seedMap.split('-')[2]
@@ -57,7 +60,7 @@ const getSeedMapInfo = (fromSeed, fromSeedNr) => {
 
   seedMaps[seedMap].forEach(seedNr => {
 
-    if(isMaped) { return }
+    if (isMaped) { return }
     const rangeLength = Number(seedNr[2])
 
     const destinationRangeStart = Number(seedNr[0])
@@ -71,7 +74,7 @@ const getSeedMapInfo = (fromSeed, fromSeedNr) => {
 
 
     // If maped
-    if(isMaped) {
+    if (isMaped) {
       destinationSeedNr = fromSeedNr + (destinationRangeStart - sourceRangeStart)
     }
 
@@ -93,7 +96,7 @@ const getSeedMapInfo = (fromSeed, fromSeedNr) => {
     console.log(destinationRangeStart - sourceRangeStart)
     console.log(' ')
 */
-    
+
   });
   //console.log({ fromSeed, toSeed, seedMap, fromSeedNr, destinationSeedNr })
   return { fromSeed, toSeed, seedMap, fromSeedNr, destinationSeedNr }
@@ -101,22 +104,39 @@ const getSeedMapInfo = (fromSeed, fromSeedNr) => {
 
 
 
-seeds.forEach(seed => {
+seeds.forEach((seed, index) => {
+  const seedNr = Number(seed)
+  const even = index % 2 == 0
+  console.log('seedNr: ' + seedNr)
 
-  const firstSeedMap = getSeedMapInfo('seed', seed)
-  let nextSeedMap = firstSeedMap
+  if (even) {
 
-  while ( !(nextSeedMap.toSeed == 'location' )) {
-   
+    const range = Number(seeds[(index + 1)])
+
+    for (let ind = 0; ind < range; ind++) {
+      let seedNrRanged = Number(ind + seedNr)
+
+      const firstSeedMap = getSeedMapInfo('seed', seedNrRanged)
+    let nextSeedMap = firstSeedMap
+
+    while (!(nextSeedMap.toSeed == 'location')) {
+
       nextSeedMap = getSeedMapInfo(nextSeedMap.toSeed, nextSeedMap.destinationSeedNr)
-    
+
       //console.log(nextSeedMap)
-      if(nextSeedMap.toSeed == 'location') {
+      if (nextSeedMap.toSeed == 'location') {
         locations.push(nextSeedMap.destinationSeedNr)
       }
+    }
+
+    }
     
+
+
+
   }
-  
+
+
 
 });
 
@@ -124,7 +144,7 @@ seeds.forEach(seed => {
 //console.log(' ')
 //console.log(' ')
 // Part one
-console.log(locations.sort( (a, b) => { return a - b })[0])
+console.log(locations.sort((a, b) => { return a - b })[0])
 // dest, source, range
 
 //console.log('seeds: ' + seeds)
