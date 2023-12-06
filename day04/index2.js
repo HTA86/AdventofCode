@@ -52,33 +52,17 @@ Object.keys(dataObjects).forEach(cardKey => {
 
     // Add to the wonen card
     cardMatch[`card ${i}`]++
-
-    //console.log('cardKey: ' + cardKey + '  ' + i)
   }
 }
 
-
-
-
-  //console.log('match: ' + cardMatch[cardKey])
   const cardCopies = [cardKey] in cardMatch ? cardMatch[cardKey] : 0
 
 
 
-
   for(let i = 1; i <= (1 + cardCopies); i++) {
-    //console.log('win loop' + ' ' + i)
     addCardMatch()
   }
 
-
-  //result += numbersWin > 0 ? 1 + cardCopies : 0
-
- 
-  // console.log('card: ' + cardNr + ' numbersWins: ' + numbersWin)
-  // console.log(' ')
-
-  
 });
 
 
@@ -86,18 +70,9 @@ Object.keys(dataObjects).forEach(cardKey => {
 // Loop wining numbers
 Object.keys(cardMatch).forEach(winCard => {
   result += cardMatch[winCard]
-  //let cardCopies = winCard in cardMatch ? cardMatch[winCard] : 0
-
-  //result += cardCopies
 });
 
 result += Object.keys(dataObjects).length
 
-//console.log(cardMatch)
 // Part Two
 console.log(`Part Two: ${result}`)
-
-
-//console.log(winingCards)
-
-// console.log(Object.keys(dataObjects).length)

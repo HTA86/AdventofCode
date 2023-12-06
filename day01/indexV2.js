@@ -9,9 +9,6 @@ try {
   console.error(err);
 }
 
-
-
-
 // Part One
 data.forEach(e => {
   // Only keep int
@@ -25,7 +22,6 @@ data.forEach(e => {
 });
 
 console.log('Part one:' + result)
-
 
 
 // Part Two

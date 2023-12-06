@@ -9,7 +9,6 @@ try {
   console.error(err);
 }
 
-//console.log(data)
 const rowLength = data[0].length - 1
 const numberOfRows = data.length - 1
 let dataObject = {}
@@ -36,29 +35,9 @@ data.forEach((dataRow, index) => {
 
     if(indexesValues.length > 1 && valueExists) {
       valuePlace = indexesValues[1]
-      //console.log('row' + index  + ' value: ' + value)
     } else {
       valuePlace = indexesValues[0]
-    }
-
-    //console.log('length: ' + indexesValues.length)
-
-    //const valuePlace = dataRow.indexOf(value)
-    
-
-
-   // console.log(' ------ ')
-
-    //console.log('value: ' + value + ' valueExists: ' + valueExists)
-
-    //console.log(' ------ ')
-
-
-    //console.log(value)
-    
-    
-
-
+    }    
 
     const symbol = valueAndSymbol.split(/\d/g).filter(a => { return a.length > 0 })[0]
 
@@ -69,34 +48,25 @@ data.forEach((dataRow, index) => {
     if (symbol) {
       const allIndexes = []
 
-      //console.log(symbol)
-      //console.log(dataRow)
-
       for (let i = 0; i < dataRow.length; i++) {
         if (dataRow[i] === symbol) {
           allIndexes.push(i)
         }
       }
 
-      //console.log(allIndexes)
-
-
       const symbolPlace = dataRow.indexOf(symbol)
-      //console.log(dataObject[index].symbols.filter(i => { return i == symbolPlace }).length)
 
       const unicSet = new Set([...dataObject[index].symbols, ...allIndexes])
 
-      dataObject[index].symbols = [...unicSet]//.push(symbolPlace)
+      dataObject[index].symbols = [...unicSet]
     }
   });
-  //console.log(index + ': ' + JSON.stringify(dataObject[index]))
 });
 
 
 
 Object.keys(dataObject).forEach(rowIndex => {
   const row = dataObject[rowIndex]
-  //console.log(row)
 
   row.values.forEach((valueData, valueIndex) => {
     const value = Object.keys(valueData)[0]
@@ -106,50 +76,24 @@ Object.keys(dataObject).forEach(rowIndex => {
     const findValueStart = valueStart < 1 ? 0 : valueStart - 1
     const findValueEnd = valueEnd == rowLength ? rowLength : valueEnd + 1
 
-    // rowLength
-    //console.log(valueStart + ' + ' + valueEnd)
-    //console.log('between ' + findValueStart + ' and ' + findValueEnd)
-
-
     // Check if symbol
     const rowsToCheck = [rowIndex]
     if (Number(rowIndex) > 0) { rowsToCheck.push(Number((rowIndex) - 1).toString()) }
     if (Number(rowIndex) < numberOfRows) { rowsToCheck.push((Number(rowIndex) + 1).toString()) }
 
-    //console.log('rowIndex: ' + rowIndex)
-    //console.log('rowsToCheck: ' + rowsToCheck)
-
-    //console.log(dataObject[rowIndex].symbols)
-
-    //console.log('value: ' + value)
-
     rowsToCheck.forEach(checkRowIndex => {
-      //dataObject[rowIndex].values[valueIndex].included = 
-
-      //console.log(dataObject[rowIndex].values[valueIndex])
 
       const symbolIndexArray = dataObject[checkRowIndex].symbols
 
       symbolIndexArray.forEach(symbolIndex => {
-        //const symbolIndex = dataObject[checkRowIndex].symbols[0]
-        /*
-              console.log('symbolIndex: ' + symbolIndex)
-              console.log('symbolIndex >= findValueStart: ' + symbolIndex >= findValueStart)
-              console.log('symbolIndex <= findValueEnd: ' + symbolIndex <= findValueEnd)
-        */
 
         if (symbolIndex && symbolIndex >= findValueStart && symbolIndex <= findValueEnd) {
           dataObject[rowIndex].values[valueIndex][value].included = true
-          //result += Number(value)
-          //console.log(value)
-          //console.log(dataObject[checkRowIndex].symbols[0])
         }
       });
 
 
     });
-
-    // console.log(' ')
   })
 });
 
@@ -161,24 +105,17 @@ Object.keys(dataObject).forEach(rowId => {
     let values = Object.keys(valueObject).filter(valueKey => { return valueObject[valueKey].included })
 
     values.forEach(value => {
-      //console.log(value)
       result += Number(value)
     });
   });
 
-
 });
-
 
 
 // Part One
 console.log(`Part One: ${result}`)
 
 
-
-
-
 // Part Two
 result = 0
-
 console.log(`Part Two: ${result}`)
