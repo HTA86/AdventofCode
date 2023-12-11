@@ -38,8 +38,6 @@ data.forEach(row => {
     if (!seedMap) {
       seedMaps[previusSeedMap].push(row.split(' '))
     }
-
-
   }
 });
 
@@ -78,16 +76,31 @@ const getSeedMapInfo = (fromSeed, fromSeedNr) => {
 
 
 
-seeds.forEach((seed, index) => {
+seeds.forEach((seed, index) => {  
   const seedNr = Number(seed)
   const even = index % 2 == 0
-  console.log('seedNr: ' + seedNr)
 
   if (even) {
-
     const range = Number(seeds[(index + 1)])
+    console.log('seedNr: ' + seedNr + ' range: ' + range)
+    let startTime = new Date()
+    let endTime = new Date()
+    const nrOfSeeds = seeds.length / 2
 
     for (let ind = 0; ind < range; ind++) {
+      if (ind % 100000 === 0) { 
+
+        endTime = new Date()
+        timeDiff = (endTime - startTime) / 1000;
+
+        let secondsThisSeed = ( range / 100000 ) * timeDiff
+        let secondsAllSeed = (( range / 100000 ) * timeDiff) * nrOfSeeds
+
+        console.log('min for seed to complete: ' + Math.round(secondsThisSeed / 60))
+        console.log('hours for all seeds to complete: ' + Math.round( (secondsAllSeed / 60) / 60))
+        startTime = new Date()
+      }
+
       let seedNrRanged = Number(ind + seedNr)
 
       const firstSeedMap = getSeedMapInfo('seed', seedNrRanged)
@@ -95,7 +108,12 @@ seeds.forEach((seed, index) => {
 
       while (!(nextSeedMap.toSeed == 'location')) {
 
+        let startTimeA = new Date()
         nextSeedMap = getSeedMapInfo(nextSeedMap.toSeed, nextSeedMap.destinationSeedNr)
+        let endTimeA = new Date()
+        let timeDiffA = (endTimeA - startTimeA);
+
+        console.log('sec for getSeedMapInfo to complete: ' + timeDiffA)
 
         if (nextSeedMap.toSeed == 'location') {
           locations.push(nextSeedMap.destinationSeedNr)
@@ -106,5 +124,5 @@ seeds.forEach((seed, index) => {
 });
 
 
-// Part one
+// Part two
 console.log(locations.sort((a, b) => { return a - b })[0])
