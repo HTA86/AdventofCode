@@ -8,9 +8,11 @@ empty space (.) and galaxies (#)
 
 
 let data
+let result = 0
+let galaxIndexes = {}
 
 try {
-  data = fs.readFileSync('exemp1.txt', 'utf8').toString().toLowerCase().split("\n");
+  data = fs.readFileSync('data.txt', 'utf8').toString().toLowerCase().split("\n");
 } catch (err) {
   console.error(err);
 }
@@ -51,19 +53,35 @@ expandColumns.forEach(colid => {
 
 // Number all Galaxies
 let numberOfGalaxes = 0
-data.forEach((row, i) => { data[i] = row.replace(/#/g, () => { numberOfGalaxes++; return numberOfGalaxes }) });
+data.forEach((row, i) => { data[i] = row.replace(/#/g, (value, galaxIndex) => {
+  numberOfGalaxes++
+  galaxIndexes[numberOfGalaxes] = { row: i, index: galaxIndex }
+  return numberOfGalaxes 
+}) });
 
 // All pairs
-
 for (let i = 0; i < numberOfGalaxes; i++) {
   const galaxNr = i+1
-  console.log('numberOfGalaxes: ' + numberOfGalaxes + ' galaxNr: ' + galaxNr)
-  console.log('numberOfGalaxes - galaxNr: ' + (numberOfGalaxes - galaxNr))
-  console.log(' ')
+  const numberOfPairs = numberOfGalaxes-galaxNr
+  //console.log('galaxNr: ' + galaxNr + ' numberOfPairs: ' + (numberOfPairs))
 
-  //let galaxPairs = Array.from({ length: 5 }, function(_, index) { return index + 5; });
+  let galaxPairs = Array.from({ length: numberOfPairs }, (_, index) => { return index + (galaxNr+1); });
   
+  galaxPairs.forEach(galaxPairId => {
+    const aLocation = galaxIndexes[galaxNr]
+    const bLocation = galaxIndexes[galaxPairId]
+    const rowDistans = Math.abs(aLocation.row - bLocation.row)
+    const indexDistans = Math.abs(aLocation.index - bLocation.index)
+    const distans = rowDistans+indexDistans
+    //console.log('Distans = ' + (distans))
+
+    result += distans
+  });
+  //console.log(galaxPairs)
+  //console.log(' ')
+
 }
 
-console.log('result: ')
-console.log(data)
+//console.log(galaxIndexes)
+console.log('result: ' + result)
+//console.log(data)
