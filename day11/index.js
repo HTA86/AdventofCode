@@ -36,14 +36,17 @@ for (let colid = 0; colid < data[0].length; colid++) {
   }
   if(nrOfGalaxies == 0) { expandColumns.push(colid) }
 }
+
+let colIdAdded = 0
 // Expand Columns
 expandColumns.forEach(colid => {
   for (let rowNr = 0; rowNr < data.length; rowNr++) {
     let splitedRow = data[rowNr].split('')
-    splitedRow.splice(colid, 0, '.')
+    splitedRow.splice((colid+colIdAdded), 0, '.')
     const newRow = splitedRow.join('')
     data[rowNr] = newRow
   }
+  colIdAdded++
 });
 
 // Number all Galaxies
