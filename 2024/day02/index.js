@@ -60,8 +60,7 @@ rowNotOk.forEach(e => {
 
       if (rowOk) { 
         result ++
-        i = e.length
-        //console.log('Breake True =) ')
+        break
       }
   }
 
