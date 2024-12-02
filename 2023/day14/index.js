@@ -4,7 +4,7 @@ let data
 let result = 0
 
 try {
-  data = fs.readFileSync('exemp.txt', 'utf8').toString().toLowerCase().split("\n");
+  data = fs.readFileSync('data.txt', 'utf8').toString().toLowerCase().split("\n");
 } catch (err) {
   console.error(err);
 }
@@ -12,7 +12,6 @@ try {
 const replaceCharacterAt = (string, index, replacement) => {
   return string.substring(0, index) + replacement + string.substring(index + 1);
 }
-
 
 const posibleMove = (rowNr, charNr) => {
   let prevRowNr = rowNr
@@ -26,7 +25,6 @@ const posibleMove = (rowNr, charNr) => {
       prevRowNr = 0
       break
     }
-
     moveToRow = prevRowNr
   }
 
@@ -46,41 +44,30 @@ const moveAllInOneCol = (charNr) => {
       if (move.posible) {
         const fromRowData = [...data[move.moveFromRow]].join('')
         const toRowData = [...data[move.moveToRow]].join('')
-        console.log('to: ' + toRowData)
-        console.log('from: ' + fromRowData)
         
-
         const fromChar = fromRowData[charNr]
         const toChar = toRowData[charNr]
 
-        console.log('Move rowNr: ' + rowNr + ' char: ' + fromChar + ' To Row: ' + move.moveToRow)
-        console.log(' ')
-
+        //console.log('Move rowNr: ' + rowNr + ' char: ' + fromChar + ' To Row: ' + move.moveToRow)
+        //console.log(' ')
 
         data[move.moveFromRow] = replaceCharacterAt(fromRowData, move.charNr, toChar)
         data[move.moveToRow] = replaceCharacterAt(toRowData, move.charNr, fromChar)
-
-
-
       }
     }
   });
 }
 
-
-
 for (let charNr = 0; charNr < data[0].length; charNr++) {
-  console.log(charNr)
   moveAllInOneCol(charNr)
 }
 
 
-
-//moveAllInOneCol(0)
-
-
-data.forEach(r => {
-  console.log(r)
+data.forEach((r, i) => {
+  const valueWeight = data.length - i
+  nrOfO = (r.match(/o/g) || []).length
+  result += (nrOfO * valueWeight)
+  //console.log(r)
 });
 
 //console.log(data)
