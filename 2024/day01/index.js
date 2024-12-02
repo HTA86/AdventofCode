@@ -13,6 +13,7 @@ try {
 }
 
 // Part One
+console.time('Execution Time Part One');
 data.forEach(e => {
   let numOnRow = e.split(" ")
 
@@ -31,11 +32,14 @@ for (let i = 0; i < left.length; i++) {
   let distance = Math.abs(left[i] - right[i]);
   result += distance;
 }
+console.timeEnd('Execution Time Part One');
 console.log('Part one: ' + result)
 
 
 
 // Part two
+console.time('Execution Time Part Two');
+
 result = 0
 for (let i = 0; i < left.length; i++) {
 
@@ -43,4 +47,5 @@ for (let i = 0; i < left.length; i++) {
   result += (appears * left[i]);
 }
 
+console.timeEnd('Execution Time Part Two');
 console.log('Part two: ' + result)

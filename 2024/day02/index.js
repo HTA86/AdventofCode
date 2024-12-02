@@ -34,6 +34,7 @@ const checkRow = (row) => {
 
 
 // Part One
+console.time('Execution Time Part One');
 data.forEach(e => {
   let row = e.split(" ")
   let rowOk = checkRow(row)
@@ -42,6 +43,7 @@ data.forEach(e => {
   if(!rowOk) { rowNotOk.push(row) }
 });
 
+console.timeEnd('Execution Time Part One');
 console.log('Part one: ' + result)
 
 
@@ -50,6 +52,7 @@ console.log('Part one: ' + result)
 
 
 // Part two
+console.time('Execution Time Part Two');
 rowNotOk.forEach(e => {
 
   for (let i = 0; i < e.length; i++) {
@@ -66,4 +69,5 @@ rowNotOk.forEach(e => {
 
 });
 
+console.timeEnd('Execution Time Part Two');
 console.log('Part two: ' + result)
