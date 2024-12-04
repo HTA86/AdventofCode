@@ -77,60 +77,41 @@ console.log('Part one: ' + result)
 
 // Part Two
 
-
-const findMas = (rows) => {
-  let firstRow = rows[0];
-  let midleRow = rows[1];
-  let lastRow = rows[2];
-  let rowLength = midleRow.length-1;
-
-  // A in the midle row?
-  let indexes = midleRow.split('').map((value, index) => value == 'a' ? index : -1)
-  // Only keep the indexes that are between the first and last index of the row
-  .filter(index => index > 0 && index < rowLength);
-
-  indexes.forEach(aIndex => {
-    let right = firstRow[aIndex-1] + midleRow[aIndex] + lastRow[aIndex+1];
-    let left = firstRow[aIndex+1] + midleRow[aIndex] + lastRow[aIndex-1];
-
-    let xmas = (right == 'mas' || right == 'sam') && (left == 'mas' || left == 'sam') ? 1 : 0;
-
-    // console.log(indexes)
-    // console.log('mas found: ' + xmas)
-    // console.log('on index: ' + aIndex)
-    // console.log(rows)
-    // console.log('')
-
-    result += xmas;
-  });
-
-}
-
-
-
 result = 0
 console.time('Execution Time Part Two');
 
-let maxI = data.length - 1;
+const validCrossLine = (string) => {
+  return string == 'mas' || string == 'sam' ? true : false
+}
 
-data.forEach((e, i) => {
-  let start = i;
-  let end   = i+3;
+let rowIndex = 1; // Start att second row
+while (true) {
+  const firstRow = data[rowIndex - 1];
+  const secondRow = data[rowIndex]
+  const lastRow = data[rowIndex + 1];
 
-  // Return if out of range
-  if (end > maxI){
-    return;
+  // start att first character
+  let stringIndex = 0;
+  while (true) {
+      // Cross line 1
+      cross1 = firstRow[stringIndex] + secondRow[stringIndex + 1] + lastRow[stringIndex + 2]
+
+      // Cross line 2
+      cross2 = firstRow[stringIndex + 2] + secondRow[stringIndex + 1] + lastRow[stringIndex]
+
+      const validCross = validCrossLine(cross1) && validCrossLine(cross2)
+
+      if (validCross) { result++ }
+
+      stringIndex++
+      if (stringIndex === firstRow.length - 2) { break; }
   }
-  
-  // Get 3 rows
-  let part = data.slice(start, end);
 
-  findMas(part)
-});
+
+  rowIndex++;
+  if (rowIndex === data.length - 1) { break; }
+}
 
 console.timeEnd('Execution Time Part Two');
 console.log('Part two: ' + result)
-console.log('2028 is to LOW')
-console.log('4722 is to HIGH')
-
 
