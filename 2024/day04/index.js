@@ -85,7 +85,7 @@ const findMas = (rows) => {
   let rowLength = midleRow.length-1;
 
   // A in the midle row?
-  let indexes = midleRow.split('').map((value, index) => value === 'a' ? index : -1)
+  let indexes = midleRow.split('').map((value, index) => value == 'a' ? index : -1)
   // Only keep the indexes that are between the first and last index of the row
   .filter(index => index > 0 && index < rowLength);
 
@@ -94,6 +94,12 @@ const findMas = (rows) => {
     let left = firstRow[aIndex+1] + midleRow[aIndex] + lastRow[aIndex-1];
 
     let xmas = (right == 'mas' || right == 'sam') && (left == 'mas' || left == 'sam') ? 1 : 0;
+
+    // console.log(indexes)
+    // console.log('mas found: ' + xmas)
+    // console.log('on index: ' + aIndex)
+    // console.log(rows)
+    // console.log('')
 
     result += xmas;
   });
@@ -109,7 +115,7 @@ let maxI = data.length - 1;
 
 data.forEach((e, i) => {
   let start = i;
-  let end   = i + 3;
+  let end   = i+3;
 
   // Return if out of range
   if (end > maxI){
@@ -124,5 +130,7 @@ data.forEach((e, i) => {
 
 console.timeEnd('Execution Time Part Two');
 console.log('Part two: ' + result)
-console.log('2004 is to LOW')
+console.log('2028 is to LOW')
+console.log('4722 is to HIGH')
+
 
