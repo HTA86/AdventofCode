@@ -5,7 +5,7 @@ let result = 0
 
 
 try {
-  data = fs.readFileSync('sample2.txt', 'utf8').toString().toLowerCase().split("\n");
+  data = fs.readFileSync('data.txt', 'utf8').toString().toLowerCase().split("\n");
 } catch (err) {
   console.error(err);
 }
@@ -50,66 +50,25 @@ const pageFolowTheRules = (arr) => {
 }
 
 
-const checkValidOrder = (nrOne, nrTwo) => {
-  // filter the rules
-  return orderingRules.filter(rule => {
+function compareByRules(a, b) {
+  let rules = orderingRules.filter(rule => {
     let [left, right] = rule.split('|');
-    return left == nrOne && right == nrTwo;
-  }).length > 0;
-}
-
-const correctTheOrder = (arr) => {
-  console.log(arr)
-  let incorrectOrder = true
-  let i = 0
-  let newArray = [...arr]
-
-  while (incorrectOrder) {
-    let currentNr = arr[i]
-    let nextNr = arr[i + 1]
-    console.log(currentNr + ' ' + nextNr)
-
-    // filter the rules
-    let isValidOrder = checkValidOrder(currentNr, nextNr)
-
-    // If incorrect order, move the current nr 1 forward
-    if (!isValidOrder) {
-      let iToMove = i
-      let moveTo = i + 1
-      let maxMove = newArray.length-1
-      while (maxMove > 0) {
-        console.log('Move ' + iToMove + ' forward')
-        // Number to move
-        let numberToMove = newArray.splice(iToMove, 1)[0];
-        // insert one forword
-        newArray.splice(moveTo, 0, numberToMove);
-        console.log(newArray)
-        maxMove--
-
-        // If the moveTo is moved to the start, set iToMove to 0
-        if (moveTo === 0) {
-          iToMove = 0
-        } else {
-          iToMove++
-        }
-
-        // If the moved number is in the last place, place it in beginig of the array
-        if (moveTo === newArray.length - 1) {
-          moveTo = 0
-        } else {
-          moveTo++
-        }
-
-
-
-      }
+    return left == a && right == b || left == b && right == a;
+  })
+  
+  // Loop all rules
+  for (let rule of rules) {
+    const [x, y] = rule.split('|');
+    if (a === x && b === y) {
+      return -1; // a is before b
     }
-    console.log(isValidOrder)
-
-    i++
-    incorrectOrder = i < (arr.length - 1)
+    if (a === y && b === x) {
+      return 1; // b is before a
+    }
   }
+  return 0; // If not found leave it as it is
 }
+
 
 
 // Part One
@@ -139,10 +98,19 @@ console.log('Part one: ' + result)
 result = 0;
 console.time('Execution Time Part Two');
 
+
+
 wrongPageNumbers.forEach(nrRow => {
+  let midNr = 0;
   let nrArray = nrRow.split(',')
-  // Correct the order
-  correctTheOrder(nrArray)
+  let midIndex = Math.floor(nrArray.length / 2);
+
+  // sort the order
+  nrArray.sort(compareByRules);
+  // find the middle index
+  midNr = Number(nrArray[midIndex])
+  // add it to the result
+  result += midNr
 });
 
 console.timeEnd('Execution Time Part Two');
